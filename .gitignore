@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.npm/
+npm-debug.log*
+
+# Environment variables (CRITICAL: keep your database password private)
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+client/dist/
+dist/
+build/
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+logs/
+*.log

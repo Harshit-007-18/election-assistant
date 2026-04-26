@@ -1,0 +1,17 @@
+{
+  "name": "election-assistant",
+  "version": "1.0.0",
+  "description": "A conversational, rule-based assistant for election guidance",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && node server.js",
+    "client": "cd client && npm run dev",
+    "seed": "cd server && node data/seed.js",
+    "build": "cd client && npm install && npm run build",
+    "start": "cd server && node server.js",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}
