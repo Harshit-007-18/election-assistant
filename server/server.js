@@ -37,7 +37,12 @@ app.use(express.static(distPath));
 
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected' });
+  res.json({ 
+    status: 'ok', 
+    db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    uri_present: !!process.env.MONGODB_URI,
+    readyState: mongoose.connection.readyState
+  });
 });
 
 // All other requests go to React index.html
