@@ -16,17 +16,23 @@ app.use(cors());
 app.use(express.json());
 
 mongoose
-  .connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/election-assistant')
-  .then(() => console.log('✅ Connected to MongoDB'))
-  .catch((err) => console.error('❌ MongoDB connection error:', err));
+  .connect(process.env.MONGODB_URI)
+  .then(() => console.log('✅ Connected to MongoDB Atlas'))
+  .catch((err) => {
+    console.error('❌ MongoDB Connection Error:', err.message);
+    if (err.message.includes('auth')) {
+      console.error('👉 TIP: Check your database password and IP whitelist in Atlas.');
+    }
+  });
 
 app.use('/api/message', messageRoutes);
 app.use('/api/user', userRoutes);
 app.use('/api/timeline', timelineRoutes);
 app.use('/api/guides', guideRoutes);
 
-// --- NEW: Serve Frontend in Production ---
-const distPath = path.join(__dirname, '../client/dist');
+// --- Robust Path Resolution ---
+const distPath = path.resolve(__dirname, '..', 'client', 'dist');
+console.log('📂 Serving static files from:', distPath);
 app.use(express.static(distPath));
 
 // Health check
