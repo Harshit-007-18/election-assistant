@@ -15,14 +15,16 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
+let dbError = null;
 mongoose
   .connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ Connected to MongoDB Atlas'))
+  .then(() => {
+    console.log('✅ Connected to MongoDB Atlas');
+    dbError = null;
+  })
   .catch((err) => {
     console.error('❌ MongoDB Connection Error:', err.message);
-    if (err.message.includes('auth')) {
-      console.error('👉 TIP: Check your database password and IP whitelist in Atlas.');
-    }
+    dbError = err.message;
   });
 
 app.use('/api/message', messageRoutes);
@@ -41,7 +43,8 @@ app.get('/api/health', (req, res) => {
     status: 'ok', 
     db: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
     uri_present: !!process.env.MONGODB_URI,
-    readyState: mongoose.connection.readyState
+    readyState: mongoose.connection.readyState,
+    db_error: dbError
   });
 });
 
